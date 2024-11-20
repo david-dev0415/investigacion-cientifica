@@ -14,20 +14,20 @@ def menu():
         print("\n6. Exportar informe a archivo de texto")
         print("\n7. Salir")
 
-        opcion = input("Selecciones una opción: ")
+        opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
             Functions.Registrar(listaExperimentos)
         elif opcion == "2":
-            pass
+            Functions.Visualizar(listaExperimentos)
         elif opcion == "3":
-            pass
+            Functions.CalculosEstadisticos()
         elif opcion == "4":
-            pass
+            Functions.CalculosEstadisticos()
         elif opcion == "5":
-            pass
+            Functions.GenerarInformes()
         elif opcion == "6":
-            pass
+            Functions.ExportarReporte()
         elif opcion == "7":
             print("Ha salido del programa")
             break
