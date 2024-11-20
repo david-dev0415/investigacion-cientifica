@@ -3,8 +3,8 @@
 ## Descripción 📄
 Sistema para la recopilación de datos de experimentales de un laboratorio cientifico, su análisis y generación de informe final.
 
-# Carácteristicas ✨
--
+## Carácteristicas ✨
+- Permite ingresar los datos de cada experimento e interactuar con sus resultados
 
 ## Instalación 🛠️
 1. Clona el repositorio:
