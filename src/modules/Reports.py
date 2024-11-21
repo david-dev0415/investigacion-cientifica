@@ -5,4 +5,11 @@
 
 '''
 
+class Reports:
+    def __init__(self):
+        pass
+
+    def generateReport(self):
+        pass
+
 
