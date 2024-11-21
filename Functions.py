@@ -2,42 +2,42 @@
 
 
 # Función Registrar
-def Registrar():
+def registrar():
 
     return
 
 
 # Función Eliminar
-def Eliminar():
+def eliminar():
 
     return
 
 
 # Función Visualizar
-def Visualizar():
+def visualizar():
 
     return
 
 
 # Función CalculosEstadisticos
-def CalculosEstadisticos():
+def calculosEstadisticos():
 
     return
 
 
 # Función CompararExperimientos
-def CompararExperimentos():
+def compararExperimentos():
 
     return
 
 
 # Función GenerarInformes
-def GenerarInformes():
+def generarInformes():
 
     return
 
 
 # Función ExportarReporte
-def ExportarReporte():
+def exportarReporte():
 
     return
