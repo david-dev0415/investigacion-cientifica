@@ -32,9 +32,9 @@ class ExperimentalData():
                 "You must enter a string for the category of the task. Example: 'Work', 'Personal', 'Study', etc."
             ) 
         
-        if not all(isinstance(resultsObtained, int) for resultsObtained in resultsObtained):
+        if not all(isinstance(result, (int, float)) for result in resultsObtained):
             raise ValueError(
-                "You must enter an float or integer for the results obtained of the experiment. Example: 1.5, 2.0, 3.0, etc."
+            "You must enter a list of floats or integers for the results obtained of the experiment. Example: [1.5, 2.0, 3.0], etc."
             )
 
         self.nameExperiment = nameExperiment
