@@ -102,10 +102,10 @@ def run():
 
             experimentsData = [
                 {
-                    "Nombre del experimento": experimentName,
-                    "Fecha de realización": completionDate,
-                    "Tipo de experimento": experimentCategory,
-                    "Resultados obtenidos": resultsObtained,
+                    "experimentName": experimentName,
+                    "completionDate": completionDate,
+                    "experimentCategory": experimentCategory,
+                    "resultsObtained": resultsObtained,
                 }
             ]
             print(experimentsData)

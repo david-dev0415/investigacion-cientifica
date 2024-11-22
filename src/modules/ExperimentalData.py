@@ -57,10 +57,10 @@ class ExperimentalData:
     def addExperiment(cls, experiments):
         for experiment in experiments:
             cls(
-                experimentName=experiment["Nombre del experimento"],
-                completionDate=experiment["Fecha de realización"],
-                experimentCategory=experiment["Tipo de experimento"],
-                resultsObtained=experiment["Resultados obtenidos"],
+                experimentName=experiment["experimentName"],
+                completionDate=experiment["completionDate"],
+                experimentCategory=experiment["experimentCategory"],
+                resultsObtained=experiment["resultsObtained"],
             )
 
     def __str__(self):
