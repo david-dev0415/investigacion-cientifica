@@ -102,22 +102,15 @@ def run():
 
             experimentsData = [
                 {
-                    "Nombre del experimento": experimentName,
-                    "Fecha de realización": completionDate,
-                    "Tipo de experimento": experimentCategory,
-                    "Resultados obtenidos": resultsObtained,
+                    "experimentName": experimentName,
+                    "completionDate": completionDate,
+                    "experimentCategory": experimentCategory,
+                    "resultsObtained": resultsObtained,
                 }
-            ]
-            print(experimentsData)
+            ]            
             ExperimentalData.addExperiment(experimentsData)
+            print("\n✅ Experimento agregado con éxito.")
 
-            # Test of prompts
-            # print("\n✅ Added experiment successfully.")
-            # print("\n-------------------")
-            # print(f"Name of the experiment: }")}")
-            # print(f"Date of completion of : experiment: {completionDate}")
-            # print(f"Type of experiment: {experimentCategory}")experimentCategory
-            # print(f"Results obtained of the experiment: {resultsObtained}")
         elif option == "2":
             ExperimentalData.printAllExperiments()
         elif option == "3":
