@@ -20,35 +20,35 @@ class ExperimentalData:
         self,
         experimentName,
         completionDate,
-        experimentType,
+        experimentCategory,
         resultsObtained: Collection,
     ):
 
         if not isinstance(experimentName, str):
             raise ValueError(
-                "You must enter a string for the name of the task. Example: 'Name Experiment 1', 'Name Experiment 2', etc."
+                "Debes ingresar un nombre para el experimento. Example: 'Experimento 1', 'Experimento 2', etc."
             )
 
         try:
             self.dateCompletion = datetime.strptime(completionDate, "%d/%m/%Y")
         except ValueError:
             raise ValueError(
-                "You must enter a date in the format 'dd/mm/yyyy'. Example: '12/12/2024', '30/11/2023', etc."
+                "Debes ingresar una fecha en el formato 'dd/mm/yyyy'. Ejemplo: '12/12/2024', '30/11/2023', etc."
             )
 
-        if not isinstance(experimentType, str):
+        if not isinstance(experimentCategory, str):
             raise ValueError(
-                "You must enter a string for the category of the task. Example: 'Work', 'Personal', 'Study', etc."
+                "Selecciona una de las categorías del experimento: 'Química', 'Biología', 'Física'"
             )
 
         if not all(isinstance(result, (int, float)) for result in resultsObtained):
             raise ValueError(
-                "You must enter a list of floats or integers for the results obtained of the experiment. Example: [1.5, 2.0, 3.0], etc."
+                "Puedes ingresar enteros o decimales para los resultados obtenidos del experimento. Ejemplo: [1.5, 2, 3], etc."
             )
 
         self.experimentName = experimentName
         self.completionDate = completionDate
-        self.experimentType = experimentType
+        self.experimentCategory = experimentCategory
         self.resultsObtained = list(resultsObtained)
 
         ExperimentalData.listExperimentalData.append(self)
@@ -57,17 +57,17 @@ class ExperimentalData:
     def addExperiment(cls, experiments):
         for experiment in experiments:
             cls(
-                experimentName=experiment["experimentName"],
-                completionDate=experiment["completionDate"],
-                experimentType=experiment["experimentType"],
-                resultsObtained=experiment["resultsObtained"],
+                experimentName=experiment["Nombre del experimento"],
+                completionDate=experiment["Fecha de realización"],
+                experimentCategory=experiment["Tipo de experimento"],
+                resultsObtained=experiment["Resultados obtenidos"],
             )
 
     def __str__(self):
         return (
-            f"Experiment: {self.experimentName}, "
+            f"Experimento: {self.experimentName}, "
             f"Completion Date: {self.completionDate}, "
-            f"Experiment Type: {self.experimentType}, "
+            f"Experiment Type: {self.experimentCategory}, "
             f"Results obtained: {self.resultsObtained}\n "
         )
 
@@ -79,12 +79,13 @@ class ExperimentalData:
         pass
 
     def printAllExperiments():
-        for experiment in ExperimentalData.listExperimentalData:
-            print(
-                {
-                    "experimentName": experiment.experimentName,
-                    "completionDate": experiment.completionDate,
-                    "experimentType": experiment.experimentType,
-                    "resultsObtained": experiment.resultsObtained,
-                }
-            )
+        if not ExperimentalData.listExperimentalData:
+            print("⚠️  No hay experimentos registrados.")
+        for i, experiment in enumerate(ExperimentalData.listExperimentalData, start=1):
+            print(f"Experimento {i}:")
+            print(f"Nombre del experimento: {experiment.experimentName}")
+            print(f"Fecha de realización: {experiment.completionDate}")
+            print(f"Tipo de experimento: {experiment.experimentCategory}")
+            print(f"Resultados obtenidos: {experiment.resultsObtained}")
+            for j, result in enumerate(experiment.resultsObtained, start=1):
+                print(f"        Resultado {j} : {result}")
