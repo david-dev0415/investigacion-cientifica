@@ -1,8 +1,10 @@
-'''
+"""
     Menu main of program 
-'''
+"""
+
 from .modules import ExperimentalData
 from .utils import validations
+
 
 def run():
 
@@ -23,40 +25,60 @@ def run():
 
             print("\n-------------------")
             print("✏️ Add a experiment")
-            print("-------------------\n")                       
-            nameExperiment = input("Enter the name of the experiment: ")
-            dateCompletion = input("Enter the date of completion of the experiment (dd/mm/yyyy): ")
+            print("-------------------\n")
+            experimentName = input("Enter the name of the experiment: ")
+            completionDate = input(
+                "Enter the date of completion of the experiment (dd/mm/yyyy): "
+            )
 
-            while not validations.isValidDate(dateCompletion):
-                print("⚠️ You must enter a date in the format 'dd/mm/yyyy'. Example: '12/12/2024', '30/11/2023', etc.")
-                dateCompletion = input("Enter the date of completion of the experiment (dd/mm/yyyy): ")
+            while not validations.isValidDate(completionDate):
+                print(
+                    "⚠️ You must enter a date in the format 'dd/mm/yyyy'. Example: '12/12/2024', '30/11/2023', etc."
+                )
+                completionDate = input(
+                    "Enter the date of completion of the experiment (dd/mm/yyyy): "
+                )
 
-            typeExperiment = input("\nEnter the type of experiment:")
-            
+            experimentType = input("\nEnter the type of experiment:")
+
             try:
-                print("\n--------------------------------------------------------------------------")
-                print("⚠️ Note: you must enter a minimum of 3 results obtained of the experiment.")
-                print("--------------------------------------------------------------------------\n")
-                minResultsObtained = int(input("Enter the number of results obtained of the experiment: "))
+                print(
+                    "\n--------------------------------------------------------------------------"
+                )
+                print(
+                    "⚠️ Note: you must enter a minimum of 3 results obtained of the experiment."
+                )
+                print(
+                    "--------------------------------------------------------------------------\n"
+                )
+                minResultsObtained = int(
+                    input("Enter the number of results obtained of the experiment: ")
+                )
 
                 for i in range(minResultsObtained):
                     while True:
                         try:
-                            result = float(input(f" 🔹 Enter the result {i+1} obtained of the '{nameExperiment}': "))
+                            result = float(
+                                input(
+                                    f" 🔹 Enter the result {i+1} obtained of the '{experimentName}': "
+                                )
+                            )
                             resultsObtained.append(result)
                             break
                         except ValueError:
                             print("⛔ You must enter a valid number for the result.")
 
             except ValueError:
-                print("You must enter a number for the results obtained of the experiment.")
+                print(
+                    "You must enter a number for the results obtained of the experiment."
+                )
 
             experimentsData = [
                 {
-                    "nameExperiment": nameExperiment,
-                    "dateCompletion": dateCompletion,
-                    "typeExperiment": typeExperiment,
-                    "resultsObtained": resultsObtained
+                    "experimentName": experimentName,
+                    "completionDate": completionDate,
+                    "experimentType": experimentType,
+                    "resultsObtained": resultsObtained,
                 }
             ]
             print(experimentsData)
@@ -65,23 +87,23 @@ def run():
             # Test of prompts
             # print("\n✅ Added experiment successfully.")
             # print("\n-------------------")
-            # print(f"Name of the experiment: {nameExperiment}")
-            # print(f"Date of completion of the experiment: {dateCompletion}")
-            # print(f"Type of experiment: {typeExperiment}")
-            # print(f"Results obtained of the experiment: {resultsObtained}")            
-        elif option == "2": 
-            ExperimentalData.printAllExperiments()            
+            # print(f"Name of the experiment: }")}")
+            # print(f"Date of completion of : experiment: {completionDate}")
+            # print(f"Type of experiment: {experimentType}")experimentType
+            # print(f"Results obtained of the experiment: {resultsObtained}")
+        elif option == "2":
+            ExperimentalData.printAllExperiments()
         elif option == "3":
-            #Functions.CalculosEstadisticos()
+            # Functions.CalculosEstadisticos()
             pass
         elif option == "4":
-            #Functions.CalculosEstadisticos()
+            # Functions.CalculosEstadisticos()
             pass
         elif option == "5":
-            #Functions.GenerarInformes()
+            # Functions.GenerarInformes()
             pass
         elif option == "6":
-            #Functions.ExportarReporte()
+            # Functions.ExportarReporte()
             pass
         elif option == "7":
             print("Has salido del programa.")
