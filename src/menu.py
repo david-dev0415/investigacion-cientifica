@@ -8,32 +8,40 @@ from .utils import validations
 
 def run():
 
-    while True:
-        print("\n¿Que desea hacer?\n")
-        print("1. ✏️ Agregar un experimento")
-        print("2. 🔍 Visualizar los experimentos")
-        print("3. 🧮 Realizar cálculos")
-        print("4. 📊 Comparar experimentos")
-        print("5. 📑 Generar informe final")
-        print("6. 💾 Exportar informe a archivo de texto")
-        print("7. 🔚 Salir")
+    menu = '''
+¿Qué desea hacer?
 
+1. ✏️ Agregar un experimento
+2. 🔍 Visualizar los experimentos
+3. 🧮 Realizar cálculos
+4. 📊 Comparar experimentos
+5. 📑 Generar informe final
+6. 💾 Exportar informe a archivo de texto
+7. 🔚 Salir  
+    '''
+
+    while True:
+        print(menu)        
         option = input("\nSeleccione una opción: ")
 
         if option == "1":
             resultsObtained = []
 
-            print("\n-------------------")
+            print(
+                    "\n--------------------------------------------------------------------------"
+                )
             print("✏️ Agregar un experimento")
-            print("-------------------\n")
-            experimentName = input("Ingrese el nombre del experimento: ")
+            print(
+                    "--------------------------------------------------------------------------\n"
+                )
+            experimentName = input("Ingrese el nombre del experimento: ").capitalize()
             completionDate = input(
                 "Ingrese la fecha de realización del experimento (dd/mm/yyyy): "
             )
 
             while not validations.isValidDate(completionDate):
                 print(
-                    "⚠️ Debes ingresar una fecha en el formato 'dd/mm/yyyy'. Ejemplo: '12/12/2024', '30/11/2023', etc."
+                    "\n⚠️ Debes ingresar una fecha en el formato 'dd/mm/yyyy'. Ejemplo: '12/12/2024', '30/11/2023', etc.\n"
                 )
                 completionDate = input(
                     "Ingrese la fecha de realización del experimento (dd/mm/yyyy): "
@@ -41,9 +49,12 @@ def run():
 
             while True:  # Internal bucle for the category
                 print("\nCategorías:")
-                print("1. 🧪 Química")
-                print("2. ☣️  Biología")
-                print("3. 👨‍🔬 Física")
+                menuCategory = '''
+    1. 🧪 Química
+    2. ☣️ Biología
+    3. 👨 Física
+                '''
+                print(menuCategory)
                 experimentCategory = input("Ingrese la categoría del experimento: ")
 
                 if experimentCategory == "1":
@@ -58,20 +69,14 @@ def run():
                 else:
                     print("⚠️ Debes seleccionar una categoría válida. Intenta de nuevo.")
 
-            print(f"\nHas seleccionado la categoría: {experimentCategory}")
-            try:
+            print(f"Has seleccionado la categoría: {experimentCategory}\n")
+            try:                
                 print(
-                    "\n--------------------------------------------------------------------------"
-                )
-                print(
-                    "ℹ️ A continuación, debes ingresar los resultados que arrojó el experimento (ingresa 3 como mínimo)."
-                )
-                print(
-                    "--------------------------------------------------------------------------\n"
-                )
+                    "ℹ  A continuación, debes ingresar los resultados que arrojó el experimento (ingresa 3 como mínimo).\n"
+                )               
                 while True:  # Bucle for validation one minimum of 3 results
                     minResultsObtained = int(
-                        input("Cuántos resultados obtuvo el experimento: ")
+                        input("¿Cuántos resultados obtuvo el experimento?: ")
                     )
                     if minResultsObtained >= 3:
                         break
@@ -85,7 +90,7 @@ def run():
                         try:
                             result = float(
                                 input(
-                                    f" 🔹 Ingrese el resultado número {i+1} para el experimiento '{experimentName}': "
+                                    f"\n    🔹 Ingrese el resultado número {i+1} para el experimiento '{experimentName}': "
                                 )
                             )
                             resultsObtained.append(result)
@@ -94,28 +99,45 @@ def run():
                             print(
                                 "⛔ Debes ingresar un número válido para el experimento."
                             )
-
-            except ValueError:
+                experimentsData = [
+                    {
+                        "experimentName": experimentName,
+                        "completionDate": completionDate,
+                        "experimentCategory": experimentCategory,
+                        "resultsObtained": resultsObtained,
+                        "experimentId": len(ExperimentalData.listExperimentalData) + 1
+                    }
+                ]            
+                ExperimentalData.addExperiment(experimentsData)
                 print(
-                    "Debes ingresar un número de resultados obtenidos del experimento."
+                    "\n--------------------------------------------------------------------------"
+                )
+                print("✅ Experimento agregado con éxito.")
+                print(
+                    "--------------------------------------------------------------------------\n"
                 )
 
-            experimentsData = [
-                {
-                    "experimentName": experimentName,
-                    "completionDate": completionDate,
-                    "experimentCategory": experimentCategory,
-                    "resultsObtained": resultsObtained,
-                }
-            ]            
-            ExperimentalData.addExperiment(experimentsData)
-            print("\n✅ Experimento agregado con éxito.")
-
+            except ValueError:
+                print("\n⛔ Debes ingresar un número de resultados obtenidos del experimento."
+                )            
         elif option == "2":
+            print(
+                "\n--------------------------------------------------------------------------"
+            )
+            print("🔍 Visualizar los experimentos")
+            print(
+                "--------------------------------------------------------------------------\n"
+            )
             ExperimentalData.printAllExperiments()
         elif option == "3":
-            # Functions.CalculosEstadisticos()
-            pass
+            print(
+                "\n--------------------------------------------------------------------------"
+            )
+            print("🧮 Realizar cálculos")
+            print(
+                "--------------------------------------------------------------------------\n"
+            )
+            ExperimentalData.calculatedResults()
         elif option == "4":
             # Functions.CalculosEstadisticos()
             pass
@@ -123,9 +145,9 @@ def run():
             # Functions.GenerarInformes()
             pass
         elif option == "6":
-            # Functions.ExportarReporte()
-            pass
-        elif option == "7":
+            ExperimentalData.exportExperimentsToFile()
+            
+        elif option == "7" or option.lower() == "salir":
             print("Has salido del programa.")
             break
         else:
