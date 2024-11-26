@@ -1,21 +1,12 @@
-""" 
-Task | task module (tareas)
-
-Provides a simple interface for create Experimental Data.
-.- The ExperimentalData class is used to create tasks with the following attributes:
-    .- nameExperiment: Name experiment.
-    .- dateCompletion: Date completion of the experiment.
-    .- typeExperiment: Type of experiment.
-    .- resultsObtained: Results obtained of the experiment.
-"""
-
 from datetime import datetime
 from collections.abc import Collection
 import os
-from pathlib import Path  # For validate results saved on collection
+from pathlib import Path
 from prettytable import PrettyTable
+
+
 class ExperimentalData:
-    listExperimentalData = []    
+    listExperimentalData = []
     tableStr = ""
 
     def __init__(
@@ -24,12 +15,11 @@ class ExperimentalData:
         completionDate,
         experimentCategory,
         resultsObtained: Collection,
-        experimentId,
+        experimentId=0,
     ):
-
         if not isinstance(experimentName, str):
             raise ValueError(
-                "Debes ingresar un nombre para el experimento. Example: 'Experimento 1', 'Experimento 2', etc."
+                "Debes ingresar un nombre para el experimento. Ejemplo: 'Experimento 1', 'Experimento 2', etc."
             )
 
         try:
@@ -70,41 +60,45 @@ class ExperimentalData:
         ExperimentalData.setTable()
 
     @classmethod
-    def isExperimentRegistered(cls):        
+    def isExperimentRegistered(cls):
         if not cls.listExperimentalData:
-            print("⛔ No se puede exportar información porque no hay experimentos registrados. \nAgrega experimentos primero...")
+            print(
+                "⛔ No se puede utilizar este recurso porque no hay experimentos registrados. \nAgrega experimentos primero..."
+            )
             return False
         return True
 
     @classmethod
     def printAllExperiments(cls):
         if not cls.isExperimentRegistered():
-            return                
+            return
         print(cls.getTableStr())
 
     @classmethod
     def setTable(cls):
         cls.table = PrettyTable()
         cls.table.field_names = ["Id", "Nombre", "Fecha", "Categoría", "Resultados"]
-        
-        for exp in ExperimentalData.listExperimentalData:
-            cls.table.add_row([
-                exp.experimentId, 
-                exp.experimentName, 
-                exp.completionDate, 
-                exp.experimentCategory,
-                ", ".join(map(str, exp.resultsObtained))
-            ])
-        
+
+        for exp in cls.listExperimentalData:
+            cls.table.add_row(
+                [
+                    exp.experimentId,
+                    exp.experimentName,
+                    exp.completionDate,
+                    exp.experimentCategory,
+                    ", ".join(map(str, exp.resultsObtained)),
+                ]
+            )
+
     @classmethod
-    def getTable(cls):        
+    def getTable(cls):
         return cls.table
 
     @classmethod
     def getTableStr(cls):
         cls.tableStr = cls.table.get_string()
         return cls.tableStr
-    # Falta ingresar datos como: Fecha y hora de exportación, nombre de archivo y nombre de equipo.
+
     @classmethod
     def exportExperimentsToFile(cls):
         fileName = "informe-experimental.txt"
@@ -114,55 +108,47 @@ class ExperimentalData:
         if not cls.isExperimentRegistered():
             return
 
-        if not os.path.exists("informes-exportados"):
+        if not os.path.exists(folder):
             os.makedirs(directory)
-            print(f"\nSe ha creado el 📁 '{folder}'.\n")
+            print(f"\nSe ha creado la carpeta 📁 '{folder}'.\n")
 
         try:
             with open(directory / fileName, "w") as f:
                 f.write(cls.getTableStr())
-                print(f"✅ Informe exportado exitosamente en '{directory / fileName}'.\n")
+                print(
+                    f"✅ Informe exportado exitosamente en '{directory / fileName}'.\n"
+                )
         except Exception as e:
             print(f"⛔ Error al exportar el informe experimental: {e}")
 
     @classmethod
     def calculatedResults(cls):
-
-        cls.listExperimentalData = [
-            {
-                "experimentName": "Experimento 1",
-                "experimentId": 1,
-                "completionDate": "12/01/2024",
-                "experimentCategory": "Química",
-                "resultsObtained": [1, 2, 3]
-            },
-            {
-                "experimentName": "Experimento 2",
-                "experimentId": 2,
-                "completionDate": "12/12/2024",
-                "experimentCategory": "Física",
-                "resultsObtained": [4, 5, 6]
-            }
-        ]
-
         if not cls.isExperimentRegistered():
             return
-        
-        for exp in cls.listExperimentalData:
-            print(f"  🔹 Id: {exp["experimentId"]}, {exp["experimentName"]}")
-
-        experimentInput = int(input("\nIngresa el Id del experimento para calcular los resultados: "))
 
         for exp in cls.listExperimentalData:
-            if exp["experimentId"] == experimentInput:
-                print(f"El experimento {exp["experimentName"]} tiene los siguientes resultados: {cls.calculateAverageResults(cls, experimentInput)}")
-                return
-            else:
-                print(f" ⚠️ No se encontró un experimento con el Id {experimentInput}, ingresado.")
-                return
+            print(f"  🔹 Id: {exp.experimentId}, - {exp.experimentName}")
 
-    def calculateAverageResults(self, id):
-        for exp in self.listExperimentalData:
-            if exp["experimentId"] == id:
-                return sum(exp["resultsObtained"]) / len(exp["resultsObtained"])
-        
+        experimentInput = int(
+            input("\nIngresa el Id del experimento para calcular los resultados: ")
+        )
+
+        for exp in cls.listExperimentalData:
+            if exp.experimentId == experimentInput:
+                print(
+                    f"El experimento {exp.experimentName} tiene los siguientes resultados: \nPromedio: {cls.calculateAverageResults(experimentInput)}"
+                )
+                return
+        print(
+            f" ⚠️ No se encontró un experimento con el Id {experimentInput}, ingresado."
+        )
+
+    @classmethod
+    def calculateAverageResults(cls, id):
+        for exp in cls.listExperimentalData:
+            if exp.experimentId == id:
+                return sum(exp.resultsObtained) / len(exp.resultsObtained)
+
+    @classmethod
+    def calculateMin(cls, id):
+        pass

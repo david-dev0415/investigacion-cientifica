@@ -8,7 +8,7 @@ from .utils import validations
 
 def run():
 
-    menu = '''
+    menu = """
 ¿Qué desea hacer?
 
 1. ✏️ Agregar un experimento
@@ -18,22 +18,22 @@ def run():
 5. 📑 Generar informe final
 6. 💾 Exportar informe a archivo de texto
 7. 🔚 Salir  
-    '''
+    """
 
     while True:
-        print(menu)        
+        print(menu)
         option = input("\nSeleccione una opción: ")
 
         if option == "1":
             resultsObtained = []
 
             print(
-                    "\n--------------------------------------------------------------------------"
-                )
+                "\n--------------------------------------------------------------------------"
+            )
             print("✏️ Agregar un experimento")
             print(
-                    "--------------------------------------------------------------------------\n"
-                )
+                "--------------------------------------------------------------------------\n"
+            )
             experimentName = input("Ingrese el nombre del experimento: ").capitalize()
             completionDate = input(
                 "Ingrese la fecha de realización del experimento (dd/mm/yyyy): "
@@ -49,11 +49,11 @@ def run():
 
             while True:  # Internal bucle for the category
                 print("\nCategorías:")
-                menuCategory = '''
+                menuCategory = """
     1. 🧪 Química
     2. ☣️ Biología
     3. 👨 Física
-                '''
+                """
                 print(menuCategory)
                 experimentCategory = input("Ingrese la categoría del experimento: ")
 
@@ -70,10 +70,10 @@ def run():
                     print("⚠️ Debes seleccionar una categoría válida. Intenta de nuevo.")
 
             print(f"Has seleccionado la categoría: {experimentCategory}\n")
-            try:                
+            try:
                 print(
                     "ℹ  A continuación, debes ingresar los resultados que arrojó el experimento (ingresa 3 como mínimo).\n"
-                )               
+                )
                 while True:  # Bucle for validation one minimum of 3 results
                     minResultsObtained = int(
                         input("¿Cuántos resultados obtuvo el experimento?: ")
@@ -105,9 +105,9 @@ def run():
                         "completionDate": completionDate,
                         "experimentCategory": experimentCategory,
                         "resultsObtained": resultsObtained,
-                        "experimentId": len(ExperimentalData.listExperimentalData) + 1
+                        "experimentId": len(ExperimentalData.listExperimentalData) + 1,
                     }
-                ]            
+                ]
                 ExperimentalData.addExperiment(experimentsData)
                 print(
                     "\n--------------------------------------------------------------------------"
@@ -118,8 +118,9 @@ def run():
                 )
 
             except ValueError:
-                print("\n⛔ Debes ingresar un número de resultados obtenidos del experimento."
-                )            
+                print(
+                    "\n⛔ Debes ingresar un número de resultados obtenidos del experimento."
+                )
         elif option == "2":
             print(
                 "\n--------------------------------------------------------------------------"
@@ -146,7 +147,7 @@ def run():
             pass
         elif option == "6":
             ExperimentalData.exportExperimentsToFile()
-            
+
         elif option == "7" or option.lower() == "salir":
             print("Has salido del programa.")
             break
