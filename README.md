@@ -1,12 +1,12 @@
-# Proyecto de investigación cientifica 🦯
+# 🔬 Proyecto de investigación cientifica
 
 ## Descripción 📄
 Sistema para la recopilación de datos de experimentales de un laboratorio cientifico, su análisis y generación de informe final.
 
-## Carácteristicas ✨
+## ✨ Carácteristicas 
 - Permite ingresar los datos de cada experimento e interactuar con sus resultados
 
-## Instalación 🛠️
+## 🛠️ Instalación 
 1. Clona el repositorio:
    
   ```markdown
@@ -24,7 +24,7 @@ Sistema para la recopilación de datos de experimentales de un laboratorio cient
     pip install -r requirements.txt
     ```
 
-## Uso 🚀
+## 🚀 Uso 
   1. Ejecuta el script principal:
     ```bash
     python main.py
@@ -32,7 +32,7 @@ Sistema para la recopilación de datos de experimentales de un laboratorio cient
 
   2. Sigue las instrucciones en pantalla para recopilar y analizar los datos.
 
-## Contribuir 🤝
+## 🤝 Contribuir 
 1. Haz un fork del repositorio.
 2. Crea una nueva rama:
   ```bash
@@ -48,6 +48,6 @@ Sistema para la recopilación de datos de experimentales de un laboratorio cient
   ```
 
 5. Abre un Pull Request.
-## Licencia 📄
+## 📄 Licencia 
 Este proyecto está bajo la Licencia MIT.
 ```
