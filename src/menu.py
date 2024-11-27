@@ -11,7 +11,7 @@ def run():
     menu = """
 ¿Qué desea hacer?
 
-1. ✏️  Agregar un experimento
+1. ✏️ Agregar un experimento
 2. 🔍 Visualizar los experimentos
 3. 🧮 Realizar cálculos
 4. 📊 Comparar experimentos
@@ -51,7 +51,7 @@ def run():
                 print("\nCategorías:")
                 menuCategory = """
     1. 🧪 Química
-    2. ☣️  Biología
+    2. ☣️ Biología
     3. 👨 Física
                 """
                 print(menuCategory)
@@ -90,7 +90,7 @@ def run():
                         try:
                             result = float(
                                 input(
-                                    f"\n    🔹 Ingrese el resultado número {i+1} para el experimiento '{experimentName}': "
+                                    f"\n   🔹 Ingrese el resultado número {i+1} para el experimiento '{experimentName}': "
                                 )
                             )
                             resultsObtained.append(result)

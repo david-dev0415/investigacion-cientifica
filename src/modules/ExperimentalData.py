@@ -127,7 +127,7 @@ class ExperimentalData:
             return
 
         for exp in cls.listExperimentalData:
-            print(f"  🔹 Id: {exp.experimentId}, - {exp.experimentName}")
+            print(f"  🔹 Id: {exp.experimentId}, {exp.experimentName}")
 
         isFound = False  # Verifica si el ID existe en la lista
         while not isFound:
@@ -177,69 +177,64 @@ class ExperimentalData:
             )
             return
 
-        print("Estos son los experimentos disponibles:")
+        print("Estos son los experimentos disponibles:\n")
 
         for exp in cls.listExperimentalData:
-            print(f"  🔹 Id: {exp.experimentId}, - {exp.experimentName}")
+            print(f"🔹 Id: {exp.experimentId}, - {exp.experimentName}")
 
         while True:
-            quantityExperiments = int(input("\n¿Cuántos experimentos desea comparar? "))
+            quantityExperiments = int(input("\n¿Cuántos experimentos desea comparar?: "))
+            print(f"\n------------------------------------------")
+            print(f"🔺 Cantidad de experimentos a comparar: {quantityExperiments}")
+            print(f"------------------------------------------")
 
             if quantityExperiments > avaliableExperiments:
                 print(
-                    f"\n ⚠️ Sólo hay {avaliableExperiments} experimentos disponibles para comparar."
+                    f"\n⚠️ Sólo hay {avaliableExperiments} experimentos disponibles para comparar."
                 )
                 continue
             elif quantityExperiments < 2:
                 print(
-                    "\n ⚠️  No son suficientes experimentos, para comparar como mínimo debes ingresar dos."
+                    "\n ⚠️ No son suficientes experimentos, para comparar como mínimo debes ingresar dos."
                 )
                 continue
 
-            for i in range(quantityExperiments):
-                experimentInput = int(
-                    input(f"\nPor favor, ingrese el ID del experimento {i + 1}: ")
-                )
+            experimentIds = []
+            i = 1
+            while i <= quantityExperiments:                
+                experimentInput = int(input(f"🔘 Ingrese el ID del experimento {i}: "))
+                # Si es ingresado el mismo ID, se repite el bucle.
+                if experimentInput in experimentIds:
+                    print(f"\n ⚠️ El ID {experimentInput} ya ha sido ingresado. Por favor, ingrese uno diferente.")                    
+                    continue
+                # Si el ID no existe en la lista, se repite el bucle.
+                if not any(exp.experimentId == experimentInput for exp in cls.listExperimentalData):
+                    print(f"\n⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, ingrese correctamente el ID.\n")                    
+                    continue
 
-                cls.comparativeResults(experimentInput)
-
-                break
+                experimentIds.append(experimentInput)
+                i += 1
+                
+            # Esto nos llama a la función comparativeResults con los Ids recogidos.
+            cls.comparativeResults(experimentIds)
+            break
 
     @classmethod
-    def comparativeResults(cls, experimentInput=None):
+    def comparativeResults(cls, experimentIds=None):
         isFound = False
         experimentResults = {}  # Diccionario para almacenar los resultados
 
-        if experimentInput is None:
-            # Caso 2: Generar estadísticas de todos los experimentos almacenados
-            for exp in cls.listExperimentalData:
-                avg = cls.calculateAverageResults(exp.experimentId)
-                minVal = cls.calculateMin(exp.experimentId)
-                maxVal = cls.calculateMax(exp.experimentId)
+        if experimentIds is None:
+            experimentIds = [exp.experimentId for exp in cls.listExperimentalData]
 
-                experimentResults[exp.experimentId] = {
-                    "name": exp.experimentName,
-                    "average": avg,
-                    "min": minVal,
-                    "max": maxVal,
-                }
-
-                print(
-                    f"\nEl experimento {exp.experimentName} tiene los siguientes resultados: \n"
-                    f"Promedio: {avg:.2f} \n"
-                    f"Mínimo: {minVal} \n"
-                    f"Máximo: {maxVal}"
-                )
-            isFound = True
-        else:
-            # Caso 1: El usuario introduce el valor de experimentInput
+        for experimentInput in experimentIds:
             for exp in cls.listExperimentalData:
                 if exp.experimentId == experimentInput:
                     avg = cls.calculateAverageResults(experimentInput)
                     minVal = cls.calculateMin(experimentInput)
                     maxVal = cls.calculateMax(experimentInput)
 
-                    experimentResults[experimentInput] = {
+                    experimentResults[exp.experimentId] = {
                         "name": exp.experimentName,
                         "average": avg,
                         "min": minVal,
@@ -247,7 +242,7 @@ class ExperimentalData:
                     }
 
                     print(
-                        f"\nEl experimento {exp.experimentName} tiene los siguientes resultados: \n"
+                        f"\nEl experimento {exp.experimentName} tiene los siguientes resultados:\n"
                         f"Promedio: {avg:.2f} \n"
                         f"Mínimo: {minVal} \n"
                         f"Máximo: {maxVal}"
@@ -255,12 +250,11 @@ class ExperimentalData:
                     isFound = True
                     break
 
-        if not isFound:
-            print(
-                f"\n ⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, inténtelo de nuevo."
-            )
+            if not isFound:
+                print(
+                    f"\n ⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, inténtelo de nuevo."
+                )                
 
-        # Conclusiones de la comparación
         if experimentResults:
             tableResults = PrettyTable()
             tableResults.field_names = [
@@ -275,7 +269,9 @@ class ExperimentalData:
                     [exp["name"], exp["average"], exp["min"], exp["max"]]
                 )
 
+            print("------------------------------------------")
             print("\nConclusiones de la comparación:\n")
+            print("\n------------------------------------------")
             print(tableResults)
 
     @classmethod
