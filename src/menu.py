@@ -11,7 +11,7 @@ def run():
     menu = """
 ¿Qué desea hacer?
 
-1. ✏️ Agregar un experimento
+1. ✏️  Agregar un experimento
 2. 🔍 Visualizar los experimentos
 3. 🧮 Realizar cálculos
 4. 📊 Comparar experimentos
@@ -30,7 +30,7 @@ def run():
             print(
                 "\n--------------------------------------------------------------------------"
             )
-            print("✏️ Agregar un experimento")
+            print("✏️  Agregar un experimento")
             print(
                 "--------------------------------------------------------------------------\n"
             )
@@ -51,7 +51,7 @@ def run():
                 print("\nCategorías:")
                 menuCategory = """
     1. 🧪 Química
-    2. ☣️ Biología
+    2. ☣️  Biología
     3. 👨 Física
                 """
                 print(menuCategory)
@@ -140,7 +140,14 @@ def run():
             )
             ExperimentalData.calculatedResults()
         elif option == "4":
-            # Functions.CalculosEstadisticos()
+            print(
+                "\n--------------------------------------------------------------------------"
+            )
+            print("🔍 Comparando experimentos...")
+            print(
+                "--------------------------------------------------------------------------\n"
+            )
+            ExperimentalData.compareExperiments()
             pass
         elif option == "5":
             # Functions.GenerarInformes()
