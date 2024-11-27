@@ -169,7 +169,7 @@ class ExperimentalData:
     def compareExperiments(cls):
         if not cls.isExperimentRegistered():
             return
-        avaliableExperiments = len(cls.listExperimentalData)
+        avaliableExperiments = cls.availableExperiments()
 
         if avaliableExperiments < 2:
             print(
@@ -196,76 +196,88 @@ class ExperimentalData:
                 )
                 continue
 
-            experimentResults = (
-                {}
-            )  # Diccionario para almacenar los resultados de cada experimento
-
             for i in range(quantityExperiments):
                 experimentInput = int(
                     input(f"\nPor favor, ingrese el ID del experimento {i + 1}: ")
                 )
-                isFound = False
-                for exp in cls.listExperimentalData:
-                    if exp.experimentId == experimentInput:
-                        avg = cls.calculateAverageResults(experimentInput)
-                        minVal = cls.calculateMin(experimentInput)
-                        maxVal = cls.calculateMax(experimentInput)
 
-                        experimentResults[experimentInput] = {
-                            "name": exp.experimentName,
-                            "average": avg,
-                            "min": minVal,
-                            "max": maxVal,
-                        }
+                cls.comparativeResults(experimentInput)
 
-                        print(
-                            f"\nEl experimento {exp.experimentName} tiene los siguientes resultados: \n"
-                            f"Promedio: {avg:.2f} \n"
-                            f"Mínimo: {minVal} \n"
-                            f"Máximo: {maxVal}"
-                        )
-                        isFound = True
-                        break
-
-                if not isFound:
-                    print(
-                        f"\n ⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, inténtelo de nuevo."
-                    )
-                    i -= 1
-
-            # Conclusiones de la comparación
-            if experimentResults:
-                tableResults = PrettyTable()
-                tableResults.field_names = [
-                    "Experimento",
-                    "Promedio",
-                    "Mínimo",
-                    "Máximo",
-                ]
-
-                for exp in experimentResults.values():
-                    tableResults.add_row(
-                        [exp["name"], exp["average"], exp["min"], exp["max"]]
-                    )
-
-                print("\nConclusiones de la comparación:\n")
-                print(tableResults)
-                """ 
-                bestAverage = max(
-                    experimentResults.items(), key=lambda x: x[1]["average"]
-                )
-                print(
-                    f"\nEl experimento con el mejor promedio es {bestAverage[1]['name']} "
-                    f"con un promedio de {bestAverage[1]['average']:.2f}."
-                )
-
-                minResult = min(experimentResults.items(), key=lambda x: x[1]["min"])
-                print(
-                    f"\nEl experimento con el menor resultado es {minResult[1]['name']} con {minResult[1]['min']} "
-                )
-
-                maxResult = max(experimentResults.items(), key=lambda x: x[1]["max"])
-                print(
-                    f"\nEl experimento con el mayor resultado es {maxResult[1]['name']} con {maxResult[1]['max']} "
-                ) """
                 break
+
+    @classmethod
+    def comparativeResults(cls, experimentInput=None):
+        isFound = False
+        experimentResults = {}  # Diccionario para almacenar los resultados
+
+        if experimentInput is None:
+            # Caso 2: Generar estadísticas de todos los experimentos almacenados
+            for exp in cls.listExperimentalData:
+                avg = cls.calculateAverageResults(exp.experimentId)
+                minVal = cls.calculateMin(exp.experimentId)
+                maxVal = cls.calculateMax(exp.experimentId)
+
+                experimentResults[exp.experimentId] = {
+                    "name": exp.experimentName,
+                    "average": avg,
+                    "min": minVal,
+                    "max": maxVal,
+                }
+
+                print(
+                    f"\nEl experimento {exp.experimentName} tiene los siguientes resultados: \n"
+                    f"Promedio: {avg:.2f} \n"
+                    f"Mínimo: {minVal} \n"
+                    f"Máximo: {maxVal}"
+                )
+            isFound = True
+        else:
+            # Caso 1: El usuario introduce el valor de experimentInput
+            for exp in cls.listExperimentalData:
+                if exp.experimentId == experimentInput:
+                    avg = cls.calculateAverageResults(experimentInput)
+                    minVal = cls.calculateMin(experimentInput)
+                    maxVal = cls.calculateMax(experimentInput)
+
+                    experimentResults[experimentInput] = {
+                        "name": exp.experimentName,
+                        "average": avg,
+                        "min": minVal,
+                        "max": maxVal,
+                    }
+
+                    print(
+                        f"\nEl experimento {exp.experimentName} tiene los siguientes resultados: \n"
+                        f"Promedio: {avg:.2f} \n"
+                        f"Mínimo: {minVal} \n"
+                        f"Máximo: {maxVal}"
+                    )
+                    isFound = True
+                    break
+
+        if not isFound:
+            print(
+                f"\n ⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, inténtelo de nuevo."
+            )
+
+        # Conclusiones de la comparación
+        if experimentResults:
+            tableResults = PrettyTable()
+            tableResults.field_names = [
+                "Experimento",
+                "Promedio",
+                "Mínimo",
+                "Máximo",
+            ]
+
+            for exp in experimentResults.values():
+                tableResults.add_row(
+                    [exp["name"], exp["average"], exp["min"], exp["max"]]
+                )
+
+            print("\nConclusiones de la comparación:\n")
+            print(tableResults)
+
+    @classmethod
+    def availableExperiments(cls):
+        return len(cls.listExperimentalData)
