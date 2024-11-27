@@ -1,8 +1,13 @@
+# Ignore files cache
 __pycache__/
 *.pyc
 *.pyo
-venv/
 
+# Ignore virtual environment
+venv/
+env/
+
+# Ignore exported reports files
 informes-exportados/
 *.txt
 *.pdf
