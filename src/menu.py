@@ -4,25 +4,27 @@
 
 from .modules import ExperimentalData
 from .utils import validations
+from .utils import goBack
 
 
 def run():
 
     menu = """
-¿Qué desea hacer?
+¿Qué deseas hacer?
 
-1. ✏️ Agregar un experimento
+1. ✏️  Agregar un experimento
 2. 🔍 Visualizar los experimentos
 3. 🧮 Realizar cálculos
 4. 📊 Comparar experimentos
 5. 📑 Generar informe final
 6. 💾 Exportar informe a archivo de texto
-7. 🔚 Salir  
+7. 🗑️  Eliminar un experimento
+8. 🔚 Salir  
     """
 
     while True:
         print(menu)
-        option = input("\nSeleccione una opción: ")
+        option = input("Seleccione una opción: ")
 
         if option == "1":
             resultsObtained = []
@@ -30,14 +32,26 @@ def run():
             print(
                 "\n--------------------------------------------------------------------------"
             )
-            print("✏️  Agregar un experimento")
+            print(Fore.GREEN + "✏️  Agregar un experimento")
             print(
                 "--------------------------------------------------------------------------\n"
             )
+
+            # menu_secundario()
+
             experimentName = input("Ingrese el nombre del experimento: ").capitalize()
             completionDate = input(
                 "Ingrese la fecha de realización del experimento (dd/mm/yyyy): "
             )
+
+            # print(
+            #     "\n--------------------------------------------------------------------------"
+            # )
+            # inputBack = input("\nDigite 0 o 'Regresar' para volver al menú anterior: ")
+            # goBack(inputBack)
+            # print(
+            #     "\n--------------------------------------------------------------------------"
+            # )
 
             while not validations.isValidDate(completionDate):
                 print(
@@ -51,7 +65,7 @@ def run():
                 print("\nCategorías:")
                 menuCategory = """
     1. 🧪 Química
-    2. ☣️ Biología
+    2. ☣️  Biología
     3. 👨 Física
                 """
                 print(menuCategory)
@@ -114,7 +128,7 @@ def run():
                 )
                 print("✅ Experimento agregado con éxito.")
                 print(
-                    "--------------------------------------------------------------------------\n"
+                    "--------------------------------------------------------------------------"
                 )
 
             except ValueError:
@@ -155,8 +169,59 @@ def run():
         elif option == "6":
             ExperimentalData.exportExperimentsToFile()
 
-        elif option == "7" or option.lower() == "salir":
+        elif option == "7":
+            print(
+                "\n--------------------------------------------------------------------------"
+            )
+            print("🗑️  Eliminar un experimento")
+            print(
+                "--------------------------------------------------------------------------\n"
+            )
+            ExperimentalData.deleteExperiment()
+
+        elif option == "8" or option.lower() == "salir":
             print("Has salido del programa.")
             break
         else:
             print("Opción inválida")
+
+
+def menu_principal():
+    while True:
+        print("\nMenu Principal")
+        print("1. Ir al menú secundario")
+        print("0. Salir")
+
+        opcion = input("\nSeleccione una opción: ")
+
+        print("1. Ir al menú secundario")
+        print("0. Salir")
+
+        if opcion == "1":
+            menu_secundario()
+        elif opcion == "0":
+            print("👋 Saliendo...")
+            break
+        else:
+            print("⚠️ Opción no válida. Inténtelo de nuevo.")
+
+
+def menu_secundario():
+    while True:
+        print("\nMenu Secundario")
+        print("1. Realizar alguna acción")
+        print("0. Regresar al menú principal")
+
+        inputBack = input("\nDigite 0 o 'Regresar' para volver al menú anterior: ")
+
+        if inputBack.lower() == "regresar" or inputBack == "0":
+            print("🔙 Regresando...")
+            return  # Esto regresa al menú principal
+        elif inputBack == "1":
+            print("🔧 Realizando alguna acción...")
+        else:
+            print("⚠️ Opción no válida. Inténtelo de nuevo.")
+
+
+# Ejecutar el menú principal
+# menu_principal()

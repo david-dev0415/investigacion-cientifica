@@ -26,24 +26,36 @@ Sistema para la recopilación de datos de experimentales de un laboratorio cient
    - Impresión de los experimentos disponibles en una lista, mostrando los datos de cada experimento.
    - Al final se imprime una tabla con las conclusiones de la comparación.
 
+5. **🗑️  Eliminar un experimento**
+   Permite al usuario decidir qué experimento desea eliminar por su Id
+
 7. **🔚 Salir**  
    La opción de salida está operativa:  
    - Se sale del menú principal con la palabra clave `salir` o el número `7`  
 
 ### 🔴 Características Pendientes
 
-5. **📑 Generar informe final**  
+1. **📑 Generar informe final**  
    Desarrollar una funcionalidad que permita generar un informe completo con:  
-   - Descripción general de los experimentos  
-   - Resultados de los cálculos realizados  
-   - Análisis comparativo (cuando aplique)  
-   - Recomendaciones y conclusiones  
+   - Descripción general de los experimentos (Tabla)
+   - Resultados de los cálculos realizados (Tabla)
+   - Análisis comparativo (cuando aplique) (Tabla)
+   - Recomendaciones y conclusiones 
 
-6. **💾 Exportar informe a archivo de texto**  
+2. **💾 Exportar informe a archivo de texto**  
    Agregar la capacidad de exportar el informe generado en un archivo de texto (`.txt`), que incluya:  
    - Título y fecha del informe 
    - Secciones organizadas con los datos, cálculos y conclusiones  
    - Formato legible para compartir o almacenar 
+
+3. **Visualización de resultados**  
+   Configurar para que las conclusiones de la comparació´n se imprpiman en una tabla con columnas:
+   - Id
+   - Experimento
+   - Mejor promedio
+   - Max
+   - Min
+
 
 ## 🛠️ Configuración del Entorno de Desarrollo
 
