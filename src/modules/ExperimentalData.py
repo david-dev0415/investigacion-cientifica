@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from prettytable import PrettyTable
 from colorama import Fore, Back, Style
-
+from ..utils.message import successMessage, errorMessage, warningMessage
 
 class ExperimentalData:
     listExperimentalData = []
@@ -79,14 +79,13 @@ class ExperimentalData:
             for exp in cls.listExperimentalData:
                 if exp.experimentId == experimentId:
                     cls.listExperimentalData.remove(exp)
-                    print(f"\nEl experimento {exp.experimentName} ha sido eliminado.")
+                    successMessage(f"\nEl experimento {exp.experimentName} ha sido eliminado.")
                     return
-                print(f"⛔ No se encontró un experimento con el Id {experimentId}.")
-
+                errorMessage(f"⛔ No se encontró un experimento con el Id {experimentId}.")
     @classmethod
     def isExperimentRegistered(cls):
         if not cls.listExperimentalData:
-            print(
+            errorMessage(
                 "⛔ No se puede utilizar este recurso porque no hay experimentos registrados. \nRegistra resultados de experimentos primero..."
             )
             return False
@@ -139,11 +138,9 @@ class ExperimentalData:
         try:
             with open(directory / fileName, "w") as f:
                 f.write(cls.getTableStr())
-                print(
-                    f"✅ Informe exportado exitosamente en '{directory / fileName}'.\n"
-                )
+                successMessage(f"\nEl informe experimental ha sido exportado a 📁 '{folder}'.")
         except Exception as e:
-            print(f"⛔ Error al exportar el informe experimental: {e}")
+            errorMessage(f"\n⛔ Error al exportar el informe experimental: {e}")
 
     @classmethod
     def calculatedResults(cls):
@@ -173,9 +170,7 @@ class ExperimentalData:
                     isFound = True
                     return
 
-            print(
-                f"\n ⚠️  No se encontró un experimento con el Id {experimentInput}, ingresado."
-            )
+            warningMessage(f"\n⚠️ No se encontró un experimento con el ID {experimentInput}.")
 
     @classmethod
     def calculateAverageResults(cls, id):
@@ -203,9 +198,7 @@ class ExperimentalData:
         avaliableExperiments = cls.availableExperiments()
 
         if avaliableExperiments < 2:
-            print(
-                "⚠️  No hay suficientes experimentos para comparar, como mínimo debes tener dos."
-            )
+            warningMessage("⚠️ No hay suficientes experimentos para comparar, como mínimo debes tener dos.")
             return
 
         print("Estos son los experimentos disponibles:\n")
@@ -229,14 +222,10 @@ class ExperimentalData:
             print(f"------------------------------------------\n")
 
             if quantityExperiments > avaliableExperiments:
-                print(
-                    f"\n⚠️ Sólo hay {avaliableExperiments} experimentos disponibles para comparar."
-                )
+                warningMessage("⚠️ No hay suficientes experimentos para comparar, como mínimo debes tener dos.")
                 continue
             elif quantityExperiments < 2:
-                print(
-                    "\n ⚠️ No son suficientes experimentos, para comparar como mínimo debes ingresar dos."
-                )
+                warningMessage("⚠️ No hay suficientes experimentos para comparar, como mínimo debes tener dos.")
                 continue
 
             experimentIds = []
@@ -245,18 +234,14 @@ class ExperimentalData:
                 experimentInput = int(input(f"🔘 Ingrese el ID del experimento {i}: "))
                 # Si es ingresado el mismo ID, se repite el bucle.
                 if experimentInput in experimentIds:
-                    print(
-                        f"\n ⚠️ El ID {experimentInput} ya ha sido ingresado. Por favor, ingrese uno diferente."
-                    )
+                    warningMessage(f"\n⚠️ El ID {experimentInput} ya ha sido ingresado. Por favor, ingrese uno diferente.")
                     continue
                 # Si el ID no existe en la lista, se repite el bucle.
                 if not any(
                     exp.experimentId == experimentInput
                     for exp in cls.listExperimentalData
                 ):
-                    print(
-                        f"\n⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, ingrese correctamente el ID.\n"
-                    )
+                    warningMessage(f"\n⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, ingrese correctamente el ID.")
                     continue
 
                 experimentIds.append(experimentInput)
@@ -298,9 +283,7 @@ class ExperimentalData:
                     break
 
             if not isFound:
-                print(
-                    f"\n ⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, inténtelo de nuevo."
-                )
+                warningMessage(f"\n⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, ingrese correctamente el ID.")
 
         if experimentResults:
             tableResults = PrettyTable()
