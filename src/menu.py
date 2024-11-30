@@ -4,8 +4,7 @@
 
 from .modules import ExperimentalData
 from .utils import validations
-from .utils import goBack
-
+#from .utils import goBack
 
 def run():
 
@@ -204,7 +203,6 @@ def menu_principal():
             break
         else:
             print("⚠️ Opción no válida. Inténtelo de nuevo.")
-
 
 def menu_secundario():
     while True:
