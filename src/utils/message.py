@@ -1,11 +1,13 @@
 from colorama import Fore, Style
 
+
 def successMessage(message):
-    print("\n" + Fore.GREEN + "✅ " + message)
+    print(Fore.GREEN + "✅ " + message)
+
 
 def errorMessage(message):
-    print("\n" + Fore.RED + "❌ " + message)
+    print(Fore.RED + "❌ " + message)
+
 
 def warningMessage(message):
-    print("\n" + Fore.YELLOW + "⚠️ " + message)
-
+    print(Fore.YELLOW + "⚠️ " + message)

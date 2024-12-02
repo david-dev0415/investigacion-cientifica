@@ -4,9 +4,15 @@
 
 from .modules import ExperimentalData
 from .utils import validations
-#from .utils import goBack
+from colorama import Fore, init, Back
+from .utils.message import warningMessage, errorMessage
+
+# from .utils import goBack
+
 
 def run():
+
+    init(autoreset=True)
 
     menu = """
 ¿Qué deseas hacer?
@@ -31,30 +37,27 @@ def run():
             print(
                 "\n--------------------------------------------------------------------------"
             )
-            print("✏️  Agregar un experimento")
+            print(Fore.RED + Back.WHITE + "✏️  Agregar un experimento")
             print(
                 "--------------------------------------------------------------------------\n"
             )
 
-            # menu_secundario()
-
             experimentName = input("Ingrese el nombre del experimento: ").capitalize()
+            while not experimentName:
+                warningMessage(
+                    " El campo no puede estar vacío. Por favor, ingrese el nombre del experimento."
+                )
+                experimentName = input(
+                    "Ingrese el nombre del experimento: "
+                ).capitalize()
+
             completionDate = input(
                 "Ingrese la fecha de realización del experimento (dd/mm/yyyy): "
             )
 
-            # print(
-            #     "\n--------------------------------------------------------------------------"
-            # )
-            # inputBack = input("\nDigite 0 o 'Regresar' para volver al menú anterior: ")
-            # goBack(inputBack)
-            # print(
-            #     "\n--------------------------------------------------------------------------"
-            # )
-
             while not validations.isValidDate(completionDate):
-                print(
-                    "\n⚠️ Debes ingresar una fecha en el formato 'dd/mm/yyyy'. Ejemplo: '12/12/2024', '30/11/2023', etc.\n"
+                warningMessage(
+                    " Debes ingresar una fecha en el formato 'dd/mm/yyyy'. Ejemplo: '12/12/2024', '30/11/2023', etc."
                 )
                 completionDate = input(
                     "Ingrese la fecha de realización del experimento (dd/mm/yyyy): "
@@ -80,22 +83,35 @@ def run():
                     experimentCategory = "Física"
                     break
                 else:
-                    print("⚠️ Debes seleccionar una categoría válida. Intenta de nuevo.")
+                    warningMessage(
+                        " Debes seleccionar una categoría válida. Intenta de nuevo."
+                    )
 
             print(f"Has seleccionado la categoría: {experimentCategory}\n")
             try:
                 print(
-                    "ℹ  A continuación, debes ingresar los resultados que arrojó el experimento (ingresa 3 como mínimo).\n"
+                    " 📏 A continuación, debes ingresar los resultados que arrojó el experimento (ingresa 3 como mínimo).\n"
                 )
-                while True:  # Bucle for validation one minimum of 3 results
-                    minResultsObtained = int(
-                        input("¿Cuántos resultados obtuvo el experimento?: ")
-                    )
-                    if minResultsObtained >= 3:
-                        break
-                    else:
-                        print(
-                            "\n⛔ Debes ingresar al menos 3 resultados para el experimento. Intenta de nuevo."
+                while True:
+                    inputValue = input("¿Cuántos resultados obtuvo el experimento?: ")
+
+                    if inputValue.strip() == "":
+                        warningMessage(
+                            " El campo no puede estar vacío. Por favor, ingrese un valor."
+                        )
+                        continue
+
+                    try:
+                        minResultsObtained = int(inputValue)
+                        if minResultsObtained >= 3:
+                            break
+                        else:
+                            warningMessage(
+                                " Debes ingresar un número entero mayor o igual a 3. Intenta de nuevo."
+                            )
+                    except ValueError:
+                        warningMessage(
+                            " Debes ingresar un número entero válido. Intenta de nuevo."
                         )
 
                 for i in range(minResultsObtained):
@@ -109,8 +125,8 @@ def run():
                             resultsObtained.append(result)
                             break
                         except ValueError:
-                            print(
-                                "⛔ Debes ingresar un número válido para el experimento."
+                            warningMessage(
+                                " Debes ingresar un número válido para el experimento, intenta de nuevo."
                             )
                 experimentsData = [
                     {
@@ -122,17 +138,11 @@ def run():
                     }
                 ]
                 ExperimentalData.addExperiment(experimentsData)
-                print(
-                    "\n--------------------------------------------------------------------------"
-                )
-                print("✅ Experimento agregado con éxito.")
-                print(
-                    "--------------------------------------------------------------------------"
-                )
 
-            except ValueError:
-                print(
-                    "\n⛔ Debes ingresar un número de resultados obtenidos del experimento."
+            except ValueError as e:
+                errorMessage(
+                    " Debes ingresar un número de resultados obtenidos del experimento."
+                    + e
                 )
         elif option == "2":
             print(
@@ -160,13 +170,28 @@ def run():
             print(
                 "--------------------------------------------------------------------------\n"
             )
-            ExperimentalData.compareExperiments()
+            ExperimentalData.comparativeResults()
             pass
         elif option == "5":
-            # Functions.GenerarInformes()
+            print(
+                "\n--------------------------------------------------------------------------"
+            )
+            print("📑 Generando reporte general...")
+            print(
+                "--------------------------------------------------------------------------\n"
+            )
+            ExperimentalData.generateReports()
             pass
         elif option == "6":
-            ExperimentalData.exportExperimentsToFile()
+            print(
+                "\n--------------------------------------------------------------------------"
+            )
+            print("📑 Exportando informe general...")
+            print(
+                "--------------------------------------------------------------------------\n"
+            )
+            resultados = ExperimentalData.compareExperiments()
+            ExperimentalData.exportExperimentsToFile(resultados)
 
         elif option == "7":
             print(
@@ -183,43 +208,3 @@ def run():
             break
         else:
             print("Opción inválida")
-
-
-def menu_principal():
-    while True:
-        print("\nMenu Principal")
-        print("1. Ir al menú secundario")
-        print("0. Salir")
-
-        opcion = input("\nSeleccione una opción: ")
-
-        print("1. Ir al menú secundario")
-        print("0. Salir")
-
-        if opcion == "1":
-            menu_secundario()
-        elif opcion == "0":
-            print("👋 Saliendo...")
-            break
-        else:
-            print("⚠️ Opción no válida. Inténtelo de nuevo.")
-
-def menu_secundario():
-    while True:
-        print("\nMenu Secundario")
-        print("1. Realizar alguna acción")
-        print("0. Regresar al menú principal")
-
-        inputBack = input("\nDigite 0 o 'Regresar' para volver al menú anterior: ")
-
-        if inputBack.lower() == "regresar" or inputBack == "0":
-            print("🔙 Regresando...")
-            return  # Esto regresa al menú principal
-        elif inputBack == "1":
-            print("🔧 Realizando alguna acción...")
-        else:
-            print("⚠️ Opción no válida. Inténtelo de nuevo.")
-
-
-# Ejecutar el menú principal
-# menu_principal()

@@ -6,6 +6,7 @@ from prettytable import PrettyTable
 from colorama import Fore, Back, Style
 from ..utils.message import successMessage, errorMessage, warningMessage
 
+
 class ExperimentalData:
     listExperimentalData = []
     tableStr = ""
@@ -59,6 +60,17 @@ class ExperimentalData:
                 experimentId=experiment["experimentId"],
             )
         ExperimentalData.setTable()
+        print(
+            Style.BRIGHT
+            + Fore.CYAN
+            + "\n--------------------------------------------------------------------------"
+        )
+        successMessage("El experimento ha sido registrado correctamente.")
+        print(
+            Style.BRIGHT
+            + Fore.CYAN
+            + "--------------------------------------------------------------------------"
+        )
 
     @classmethod
     def deleteExperiment(cls):
@@ -79,9 +91,14 @@ class ExperimentalData:
             for exp in cls.listExperimentalData:
                 if exp.experimentId == experimentId:
                     cls.listExperimentalData.remove(exp)
-                    successMessage(f"\nEl experimento {exp.experimentName} ha sido eliminado.")
+                    successMessage(
+                        f"El experimento {exp.experimentName} ha sido eliminado."
+                    )
                     return
-                errorMessage(f"⛔ No se encontró un experimento con el Id {experimentId}.")
+                errorMessage(
+                    f"⛔ No se encontró un experimento con el Id {experimentId}."
+                )
+
     @classmethod
     def isExperimentRegistered(cls):
         if not cls.listExperimentalData:
@@ -123,26 +140,6 @@ class ExperimentalData:
         return cls.tableStr
 
     @classmethod
-    def exportExperimentsToFile(cls):
-        fileName = "informe-experimental.txt"
-        folder = "informes-exportados"
-        directory = Path.cwd() / folder
-
-        if not cls.isExperimentRegistered():
-            return
-
-        if not os.path.exists(folder):
-            os.makedirs(directory)
-            print(f"\nSe ha creado la carpeta 📁 '{folder}'.\n")
-
-        try:
-            with open(directory / fileName, "w") as f:
-                f.write(cls.getTableStr())
-                successMessage(f"\nEl informe experimental ha sido exportado a 📁 '{folder}'.")
-        except Exception as e:
-            errorMessage(f"\n⛔ Error al exportar el informe experimental: {e}")
-
-    @classmethod
     def calculatedResults(cls):
         if not cls.isExperimentRegistered():
             return
@@ -170,7 +167,9 @@ class ExperimentalData:
                     isFound = True
                     return
 
-            warningMessage(f"\n⚠️ No se encontró un experimento con el ID {experimentInput}.")
+            warningMessage(
+                f"\n⚠️ No se encontró un experimento con el ID {experimentInput}."
+            )
 
     @classmethod
     def calculateAverageResults(cls, id):
@@ -192,13 +191,15 @@ class ExperimentalData:
                 return max(exp.resultsObtained)
 
     @classmethod
-    def compareExperiments(cls):
+    def comparativeResults(cls):
         if not cls.isExperimentRegistered():
             return
         avaliableExperiments = cls.availableExperiments()
 
         if avaliableExperiments < 2:
-            warningMessage("⚠️ No hay suficientes experimentos para comparar, como mínimo debes tener dos.")
+            warningMessage(
+                "⚠️ No hay suficientes experimentos para comparar, como mínimo debes tener dos."
+            )
             return
 
         print("Estos son los experimentos disponibles:\n")
@@ -221,11 +222,10 @@ class ExperimentalData:
             )
             print(f"------------------------------------------\n")
 
-            if quantityExperiments > avaliableExperiments:
-                warningMessage("⚠️ No hay suficientes experimentos para comparar, como mínimo debes tener dos.")
-                continue
-            elif quantityExperiments < 2:
-                warningMessage("⚠️ No hay suficientes experimentos para comparar, como mínimo debes tener dos.")
+            if quantityExperiments > avaliableExperiments or quantityExperiments < 2:
+                warningMessage(
+                    "⚠️ No hay suficientes experimentos para comparar, como mínimo debes tener dos."
+                )
                 continue
 
             experimentIds = []
@@ -234,14 +234,18 @@ class ExperimentalData:
                 experimentInput = int(input(f"🔘 Ingrese el ID del experimento {i}: "))
                 # Si es ingresado el mismo ID, se repite el bucle.
                 if experimentInput in experimentIds:
-                    warningMessage(f"\n⚠️ El ID {experimentInput} ya ha sido ingresado. Por favor, ingrese uno diferente.")
+                    warningMessage(
+                        f"\n⚠️ El ID {experimentInput} ya ha sido ingresado. Por favor, ingrese uno diferente."
+                    )
                     continue
                 # Si el ID no existe en la lista, se repite el bucle.
                 if not any(
                     exp.experimentId == experimentInput
                     for exp in cls.listExperimentalData
                 ):
-                    warningMessage(f"\n⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, ingrese correctamente el ID.")
+                    warningMessage(
+                        f"\n⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, ingrese correctamente el ID."
+                    )
                     continue
 
                 experimentIds.append(experimentInput)
@@ -252,7 +256,7 @@ class ExperimentalData:
             break
 
     @classmethod
-    def comparativeResults(cls, experimentIds=None):
+    def compareExperiments(cls, experimentIds=None):
         isFound = False
         experimentResults = {}  # Diccionario para almacenar los resultados
 
@@ -273,17 +277,19 @@ class ExperimentalData:
                         "min": minVal,
                         "max": maxVal,
                     }
-                    print(
+                    """ print(
                         f"\nEl experimento {exp.experimentName} tiene los siguientes resultados:\n"
                         f"Promedio: {avg:.2f} \n"
                         f"Mínimo: {minVal} \n"
                         f"Máximo: {maxVal}"
-                    )
+                    ) """
                     isFound = True
                     break
 
             if not isFound:
-                warningMessage(f"\n⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, ingrese correctamente el ID.")
+                warningMessage(
+                    f"\n⚠️ No se encontró un experimento con el ID {experimentInput}. Por favor, ingrese correctamente el ID."
+                )
 
         if experimentResults:
             tableResults = PrettyTable()
@@ -294,10 +300,6 @@ class ExperimentalData:
                 "Mínimo",
                 "Máximo",
             ]
-
-            # sorted_experimentResults = sorted(
-            #     experimentResults.values(), key=lambda exp: exp["experimentId"]
-            # )
 
             for exp in experimentResults.values():
                 tableResults.add_row(
@@ -310,30 +312,107 @@ class ExperimentalData:
                     ]
                 )
 
-            print("\n------------------------------------------")
-            print("Detalles de la comparación:")
-            print("------------------------------------------")
-            print(tableResults)
+            print("\nINFORMACIÓN COMPARATIVA DE EXPERIMENTOS")
 
-            print("\n------------------------------------------")
-            print("Conclusiones de la comparación:")
-            print("------------------------------------------")
+            print(tableResults)
+            print("\nCONCLUSIONES DE LA COMPARACIÓN\n")
+
             bestAverage = max(experimentResults.items(), key=lambda x: x[1]["average"])
+
+            minResult = min(experimentResults.items(), key=lambda x: x[1]["min"])
+
+            maxResult = max(experimentResults.items(), key=lambda x: x[1]["max"])
+
             print(
-                f"\nEl experimento con el mejor promedio es {bestAverage[1]['name']} "
+                f" 👍 El experimento con el mejor promedio es {bestAverage[1]['name']} "
                 f"con un promedio de {bestAverage[1]['average']:.2f}."
             )
 
-            minResult = min(experimentResults.items(), key=lambda x: x[1]["min"])
             print(
-                f"\nEl experimento con el menor resultado es {minResult[1]['name']} con {minResult[1]['min']} "
+                f" ➕ El experimento con el mayor resultado es {maxResult[1]['name']} con {maxResult[1]['max']} "
             )
 
-            maxResult = max(experimentResults.items(), key=lambda x: x[1]["max"])
             print(
-                f"\nEl experimento con el mayor resultado es {maxResult[1]['name']} con {maxResult[1]['max']} "
+                f" 🤮 El experimento con el menor resultado es {minResult[1]['name']} con {minResult[1]['min']} "
             )
+        return experimentResults
 
     @classmethod
     def availableExperiments(cls):
         return len(cls.listExperimentalData)
+
+    @classmethod
+    def generateReports(cls):
+        if not cls.isExperimentRegistered():
+            return
+        print("LISTADO DE EXPERIMENTOS")
+        cls.printAllExperiments()
+        cls.compareExperiments()
+
+    @classmethod
+    def exportExperimentsToFile(cls, resultados):
+        fileName = "informe-experimental.txt"
+        folder = "informes-exportados"
+        directory = Path.cwd() / folder
+        now = datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
+
+        if not cls.isExperimentRegistered():
+            return
+
+        if not os.path.exists(folder):
+            os.makedirs(directory)
+            print(f"\nSe ha creado la carpeta 📁 '{folder}'.\n")
+
+        table = PrettyTable()
+        table.field_names = [
+            "Id",
+            "Experimento",
+            "Promedio",
+            "Mínimo",
+            "Máximo",
+        ]
+
+        print("\nCONCLUSIONES DE LA COMPARACIÓN")
+
+        for exp_id, datos in resultados.items():
+            table.add_row(
+                [
+                    datos["experimentId"],
+                    datos["name"],
+                    f"{datos['average']:.2f}",
+                    datos["min"],
+                    datos["max"],
+                ]
+            )
+        tableStr = table.get_string()
+
+        try:
+            with open(directory / fileName, "w") as f:
+                f.write(f"\nFecha de reporte: {now}\n\n")
+                f.write("LISTADO DE EXPERIMENTOS\n")
+                f.write(cls.getTableStr())
+                f.write("\n")
+                f.write("\nINFORMACIÓN COMPARATIVA DE EXPERIMENTOS\n")
+                f.write(tableStr)
+                f.write("\n")
+
+                bestAverage = max(resultados.items(), key=lambda x: x[1]["average"])
+                minResult = min(resultados.items(), key=lambda x: x[1]["min"])
+                maxResult = max(resultados.items(), key=lambda x: x[1]["max"])
+
+                f.write("\nCONCLUSIONES DE LA COMPARACIÓN\n")
+                f.write(
+                    f"El experimento con el mejor promedio es {bestAverage[1]['name']} "
+                    f"con un promedio de {bestAverage[1]['average']:.2f}."
+                )
+                f.write(
+                    f"\nEl experimento con el mayor resultado es {maxResult[1]['name']} con {maxResult[1]['max']} "
+                )
+                f.write(
+                    f"\nEl experimento con el menor resultado es {minResult[1]['name']} con {minResult[1]['min']} "
+                )
+                successMessage(
+                    f"El informe experimental ha sido exportado a 📁 '{folder}'."
+                )
+        except Exception as e:
+            errorMessage(f"⛔ Error al exportar el informe experimental: {e}")

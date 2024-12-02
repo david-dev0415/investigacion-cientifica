@@ -2,14 +2,28 @@
 from src import menu
 from colorama import Fore, Back, Style, init
 
+init(autoreset=True)
+
 if __name__ == "__main__":
-    print("\n\n-----------------------------------------------------------------------")
-    print("🔬 Bienvenido al sistema de gestión de datos de experimentos. 🧠 ")
-    print("-----------------------------------------------------------------------")
+    print(
+        Style.BRIGHT
+        + Fore.WHITE
+        + "\n-----------------------------------------------------------------------"
+    )
+    print(
+        Style.BRIGHT
+        + Fore.MAGENTA
+        + "🔬 Bienvenido al sistema de gestión de datos de experimentos. 🧠 "
+    )
+    print(
+        Style.BRIGHT
+        + Fore.WHITE
+        + "-----------------------------------------------------------------------"
+    )
     menu.run()
 
     # Inicializar colorama
-    
+
     # Impresiones con colores y estilos
     # print(Fore.RED + "Este texto es rojo.")
     # print(Fore.GREEN + "Este texto es verde.")
