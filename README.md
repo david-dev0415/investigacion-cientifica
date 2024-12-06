@@ -31,30 +31,7 @@ Sistema para la recopilación de datos de experimentales de un laboratorio cient
 
 7. **🔚 Salir**  
    La opción de salida está operativa:  
-   - Se sale del menú principal con la palabra clave `salir` o el número `7`  
-
-### 🔴 Características Pendientes
-
-1. **📑 Generar informe final**  
-   Desarrollar una funcionalidad que permita generar un informe completo con:  
-   - Descripción general de los experimentos (Tabla)
-   - Resultados de los cálculos realizados (Tabla)
-   - Análisis comparativo (cuando aplique) (Tabla)
-   - Recomendaciones y conclusiones 
-
-2. **💾 Exportar informe a archivo de texto**  
-   Agregar la capacidad de exportar el informe generado en un archivo de texto (`.txt`), que incluya:  
-   - Título y fecha del informe 
-   - Secciones organizadas con los datos, cálculos y conclusiones  
-   - Formato legible para compartir o almacenar 
-
-3. **Visualización de resultados**  
-   Configurar para que las conclusiones de la comparació´n se imprpiman en una tabla con columnas:
-   - Id
-   - Experimento
-   - Mejor promedio
-   - Max
-   - Min
+   - Se sale del menú principal con la palabra clave `salir` o el número `7` 
 
 
 ## 🛠️ Configuración del Entorno de Desarrollo
